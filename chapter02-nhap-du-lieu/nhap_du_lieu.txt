@@ -1,0 +1,88 @@
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning messages:
+1: Setting LC_CTYPE failed, using "C" 
+2: Setting LC_COLLATE failed, using "C" 
+3: Setting LC_TIME failed, using "C" 
+4: Setting LC_MESSAGES failed, using "C" 
+5: Setting LC_MONETARY failed, using "C" 
+[R.app GUI 1.77 (8007) x86_64-apple-darwin17.0]
+
+WARNING: You're using a non-UTF8 locale, therefore only ASCII characters will work.
+Please read R for Mac OS X FAQ (see Help) section 9 and adjust your system preferences accordingly.
+[Workspace restored from /Users/giakhang/.RData]
+[History restored from /Users/giakhang/.Rapp.history]
+
+> 
+> # Cách 1: Nhập số trực tiếp c()
+> age = c(50, 62, 60, 40, 48, 47, 57, 70, 48, 67)
+> insulin = c(16.5, 10.8, 32.3, 19.3, 14.2, 11.3, 15.5, 15.8, 16.2, 11.2)
+> c1 = data.frame(age, insulin)
+> c1
+   age insulin
+1   50    16.5
+2   62    10.8
+3   60    32.3
+4   40    19.3
+5   48    14.2
+6   47    11.3
+7   57    15.5
+8   70    15.8
+9   48    16.2
+10  67    11.2
+> setwd("~/study/data_science/phan_tich_du_lieu_voi_r/chapter02-nhap-du-lieu")
+> getwd()
+[1] "/Users/giakhang/study/data_science/phan_tich_du_lieu_voi_r/chapter02-nhap-du-lieu"
+> save(c1, file='cach_01.rda')
+> ls
+function (name, pos = -1L, envir = as.environment(pos), all.names = FALSE, 
+    pattern, sorted = TRUE) 
+{
+    if (!missing(name)) {
+        pos <- tryCatch(name, error = function(e) e)
+        if (inherits(pos, "error")) {
+            name <- substitute(name)
+            if (!is.character(name)) 
+                name <- deparse(name)
+            warning(gettextf("%s converted to character string", 
+                sQuote(name)), domain = NA)
+            pos <- name
+        }
+    }
+    all.names <- .Internal(ls(envir, all.names, sorted))
+    if (!missing(pattern)) {
+        if ((ll <- length(grep("[", pattern, fixed = TRUE))) && 
+            ll != length(grep("]", pattern, fixed = TRUE))) {
+            if (pattern == "[") {
+                pattern <- "\\["
+                warning("replaced regular expression pattern '[' by  '\\\\['")
+            }
+            else if (length(grep("[^\\\\]\\[<-", pattern))) {
+                pattern <- sub("\\[<-", "\\\\\\[<-", pattern)
+                warning("replaced '[<-' by '\\\\[<-' in regular expression pattern")
+            }
+        }
+        grep(pattern, all.names, value = TRUE)
+    }
+    else all.names
+}
+<bytecode: 0x7fdbeb78b5e0>
+<environment: namespace:base>
+> 
