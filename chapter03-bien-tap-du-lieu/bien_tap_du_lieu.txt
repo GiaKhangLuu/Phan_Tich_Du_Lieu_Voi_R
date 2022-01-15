@@ -1,0 +1,816 @@
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning messages:
+1: Setting LC_CTYPE failed, using "C" 
+2: Setting LC_COLLATE failed, using "C" 
+3: Setting LC_TIME failed, using "C" 
+4: Setting LC_MESSAGES failed, using "C" 
+5: Setting LC_MONETARY failed, using "C" 
+[R.app GUI 1.77 (8007) x86_64-apple-darwin17.0]
+
+WARNING: You're using a non-UTF8 locale, therefore only ASCII characters will work.
+Please read R for Mac OS X FAQ (see Help) section 9 and adjust your system preferences accordingly.
+[Workspace restored from /Users/giakhang/.RData]
+[History restored from /Users/giakhang/.Rapp.history]
+
+> setwd("~/study/phan_tich_du_lieu_voi_r/stats")
+Error in setwd("~/study/phan_tich_du_lieu_voi_r/stats") : 
+  cannot change working directory
+> 
+> # CHUẨN BỊ DỮ LIỆU
+> setwd("~/study/data_science/phan_tich_du_lieu_voi_r/stats")
+> getwd()
+[1] "/Users/giakhang/study/data_science/phan_tich_du_lieu_voi_r/stats"
+> ds = read.csv('excel.csv', header=TRUE)
+> is.data.frame(ds)
+[1] TRUE
+> attach(ds)
+> 
+> 
+> # KIỂM TRA `MISSING VALUE`
+> ds.new = na.omit(ds)
+> ds.new
+   ID Age Sex Ethnicity   IGFI IGFBP3    ALS   PINP ICTP P3NP
+1   1  18   1         1 148.27   5.14 316.00  61.84 5.81 4.21
+2   2  28   0         1 114.50   5.23 296.42  98.64 5.96 5.33
+3   3  20   1         4 109.82   4.33 269.82  93.26 4.96 4.56
+4   4  21   1         1 112.13   4.34 247.96 101.58 7.74 4.61
+5   5  28   1         1 102.86   4.35 240.04  58.77 6.66 4.95
+6   6  23   0         1 129.59   3.85 266.95  48.93 4.62 3.82
+7   7  20   1         2 142.50   3.44 300.06 135.62 5.32 6.75
+8   8  20   1         1 118.69   3.45 277.46  79.51 8.87 5.13
+9   9  20   1         1 197.69   3.96 333.33  57.25 8.78 3.82
+10 10  20   0         3 163.69   2.82 306.82  74.03 7.19 6.76
+11 11  22   1         1 144.81   3.80 296.45  68.26 6.21 5.16
+12 12  27   1         2 141.60   3.72 231.20  56.78 4.95 4.44
+13 13  26   0         2 161.80   3.98 243.60  75.75 4.54 4.84
+14 14  33   1         1 148.50   3.98 234.80  48.57 4.47 3.70
+15 15  34   1         1 157.70   4.64 224.80  50.60 6.26 4.20
+16 16  32   1         1 222.90   5.14 281.80  83.98 3.58 5.26
+17 17  28   0         1 186.70   4.56 340.74  60.43 3.52 3.68
+18 18  18   0         1 167.69   3.56 321.12  74.14 4.85 3.80
+19 19  26   1         3 220.19   2.89 243.54  38.05 6.43 5.77
+20 20  27   0         1 143.45   3.56 244.44  30.18 4.68 6.33
+> 
+> 
+> # TÁCH RỜI DỮ LIỆU: SUBSET()
+> nam = subset(ds, sex=='Name')
+Error in eval(e, x, parent.frame()) : object 'sex' not found
+> nam = subset(ds, Sex=='Name')
+> nam
+ [1] ID        Age       Sex       Ethnicity IGFI      IGFBP3    ALS       PINP      ICTP      P3NP     
+<0 rows> (or 0-length row.names)
+> nam = subset(ds, Sex=='Nam')
+> nam
+ [1] ID        Age       Sex       Ethnicity IGFI      IGFBP3    ALS       PINP      ICTP      P3NP     
+<0 rows> (or 0-length row.names)
+> nam = subset(ds, Sex==1)
+> nam
+   ID Age Sex Ethnicity   IGFI IGFBP3    ALS   PINP ICTP P3NP
+1   1  18   1         1 148.27   5.14 316.00  61.84 5.81 4.21
+3   3  20   1         4 109.82   4.33 269.82  93.26 4.96 4.56
+4   4  21   1         1 112.13   4.34 247.96 101.58 7.74 4.61
+5   5  28   1         1 102.86   4.35 240.04  58.77 6.66 4.95
+7   7  20   1         2 142.50   3.44 300.06 135.62 5.32 6.75
+8   8  20   1         1 118.69   3.45 277.46  79.51 8.87 5.13
+9   9  20   1         1 197.69   3.96 333.33  57.25 8.78 3.82
+11 11  22   1         1 144.81   3.80 296.45  68.26 6.21 5.16
+12 12  27   1         2 141.60   3.72 231.20  56.78 4.95 4.44
+14 14  33   1         1 148.50   3.98 234.80  48.57 4.47 3.70
+15 15  34   1         1 157.70   4.64 224.80  50.60 6.26 4.20
+16 16  32   1         1 222.90   5.14 281.80  83.98 3.58 5.26
+19 19  26   1         3 220.19   2.89 243.54  38.05 6.43 5.77
+> nu = subset(ds, Sex==0)
+> nu
+   ID Age Sex Ethnicity   IGFI IGFBP3    ALS  PINP ICTP P3NP
+2   2  28   0         1 114.50   5.23 296.42 98.64 5.96 5.33
+6   6  23   0         1 129.59   3.85 266.95 48.93 4.62 3.82
+10 10  20   0         3 163.69   2.82 306.82 74.03 7.19 6.76
+13 13  26   0         2 161.80   3.98 243.60 75.75 4.54 4.84
+17 17  28   0         1 186.70   4.56 340.74 60.43 3.52 3.68
+18 18  18   0         1 167.69   3.56 321.12 74.14 4.85 3.80
+20 20  27   0         1 143.45   3.56 244.44 30.18 4.68 6.33
+> 
+> 
+> old = subset(ds, age >= 25)
+> old
+ [1] ID        Age       Sex       Ethnicity IGFI      IGFBP3    ALS       PINP      ICTP      P3NP     
+<0 rows> (or 0-length row.names)
+> old = subset(ds, Age >= 25)
+> old
+   ID Age Sex Ethnicity   IGFI IGFBP3    ALS  PINP ICTP P3NP
+2   2  28   0         1 114.50   5.23 296.42 98.64 5.96 5.33
+5   5  28   1         1 102.86   4.35 240.04 58.77 6.66 4.95
+12 12  27   1         2 141.60   3.72 231.20 56.78 4.95 4.44
+13 13  26   0         2 161.80   3.98 243.60 75.75 4.54 4.84
+14 14  33   1         1 148.50   3.98 234.80 48.57 4.47 3.70
+15 15  34   1         1 157.70   4.64 224.80 50.60 6.26 4.20
+16 16  32   1         1 222.90   5.14 281.80 83.98 3.58 5.26
+17 17  28   0         1 186.70   4.56 340.74 60.43 3.52 3.68
+19 19  26   1         3 220.19   2.89 243.54 38.05 6.43 5.77
+20 20  27   0         1 143.45   3.56 244.44 30.18 4.68 6.33
+> dim(old)
+[1] 10 10
+> dim(nu)
+[1]  7 10
+> dim(nam)
+[1] 13 10
+> dim(nu)[0]
+integer(0)
+> 
+> nam.25 <- subset(ds, Age >= 25 && Sex == 1)
+> nam.25
+ [1] ID        Age       Sex       Ethnicity IGFI      IGFBP3    ALS       PINP      ICTP      P3NP     
+<0 rows> (or 0-length row.names)
+> nam.25 <- subset(ds, Age >= 25 & Sex == 1)
+> nam.25
+   ID Age Sex Ethnicity   IGFI IGFBP3    ALS  PINP ICTP P3NP
+5   5  28   1         1 102.86   4.35 240.04 58.77 6.66 4.95
+12 12  27   1         2 141.60   3.72 231.20 56.78 4.95 4.44
+14 14  33   1         1 148.50   3.98 234.80 48.57 4.47 3.70
+15 15  34   1         1 157.70   4.64 224.80 50.60 6.26 4.20
+16 16  32   1         1 222.90   5.14 281.80 83.98 3.58 5.26
+19 19  26   1         3 220.19   2.89 243.54 38.05 6.43 5.77
+> old
+   ID Age Sex Ethnicity   IGFI IGFBP3    ALS  PINP ICTP P3NP
+2   2  28   0         1 114.50   5.23 296.42 98.64 5.96 5.33
+5   5  28   1         1 102.86   4.35 240.04 58.77 6.66 4.95
+12 12  27   1         2 141.60   3.72 231.20 56.78 4.95 4.44
+13 13  26   0         2 161.80   3.98 243.60 75.75 4.54 4.84
+14 14  33   1         1 148.50   3.98 234.80 48.57 4.47 3.70
+15 15  34   1         1 157.70   4.64 224.80 50.60 6.26 4.20
+16 16  32   1         1 222.90   5.14 281.80 83.98 3.58 5.26
+17 17  28   0         1 186.70   4.56 340.74 60.43 3.52 3.68
+19 19  26   1         3 220.19   2.89 243.54 38.05 6.43 5.77
+20 20  27   0         1 143.45   3.56 244.44 30.18 4.68 6.33
+> 
+> 
+> # CHIẾT SỐ LIỆU TỪ MỘT `data.frame`
+> names(ds)
+ [1] "ID"        "Age"       "Sex"       "Ethnicity" "IGFI"      "IGFBP3"    "ALS"       "PINP"      "ICTP"     
+[10] "P3NP"     
+> data2 = ds[, c(1, 3, 7)]
+> data2
+   ID Sex    ALS
+1   1   1 316.00
+2   2   0 296.42
+3   3   1 269.82
+4   4   1 247.96
+5   5   1 240.04
+6   6   0 266.95
+7   7   1 300.06
+8   8   1 277.46
+9   9   1 333.33
+10 10   0 306.82
+11 11   1 296.45
+12 12   1 231.20
+13 13   0 243.60
+14 14   1 234.80
+15 15   1 224.80
+16 16   1 281.80
+17 17   0 340.74
+18 18   0 321.12
+19 19   1 243.54
+20 20   0 244.44
+> dim(data2)
+[1] 20  3
+> 
+> data3 = ds[1:10, c(1, 3, 7)]
+> data3
+   ID Sex    ALS
+1   1   1 316.00
+2   2   0 296.42
+3   3   1 269.82
+4   4   1 247.96
+5   5   1 240.04
+6   6   0 266.95
+7   7   1 300.06
+8   8   1 277.46
+9   9   1 333.33
+10 10   0 306.82
+> dim(data3)
+[1] 10  3
+> 
+> data4 = ds[1:10, 1:3]
+> data4
+   ID Age Sex
+1   1  18   1
+2   2  28   0
+3   3  20   1
+4   4  21   1
+5   5  28   1
+6   6  23   0
+7   7  20   1
+8   8  20   1
+9   9  20   1
+10 10  20   0
+> dim(data4)
+[1] 10  3
+> 
+> data5 = ds[1:10, 3:]
+Error: unexpected ']' in "data5 = ds[1:10, 3:]"
+> data5 = ds[1:10, 3:5]
+> data5
+   Sex Ethnicity   IGFI
+1    1         1 148.27
+2    0         1 114.50
+3    1         4 109.82
+4    1         1 112.13
+5    1         1 102.86
+6    0         1 129.59
+7    1         2 142.50
+8    1         1 118.69
+9    1         1 197.69
+10   0         3 163.69
+> dim(data5)
+[1] 10  3
+> 
+> 
+> # NHẬP 2 `data.frame` THÀNH MỘT: MERGE()
+> id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+> id
+ [1]  1  2  3  4  5  6  7  8  9 10
+> sex = c('Nam', 'Nu', 'Nu', 'Nam', 'Nam', 'Nu', 'Nam', 'Nam', 'Nam', 'Nu')
+> sẽ
+Error: unexpected input in "s·"
+> sex
+ [1] "Nam" "Nu"  "Nu"  "Nam" "Nam" "Nu"  "Nam" "Nam" "Nam" "Nu" 
+> tc = c(4.0, 3.5, 4.7, 7.7, 5.0, 4.2, 5.9, 6.1, 5.9, 4.0)
+> d1 = data.frame(id, sex, tc)
+> d1
+   id sex  tc
+1   1 Nam 4.0
+2   2  Nu 3.5
+3   3  Nu 4.7
+4   4 Nam 7.7
+5   5 Nam 5.0
+6   6  Nu 4.2
+7   7 Nam 5.9
+8   8 Nam 6.1
+9   9 Nam 5.9
+10 10  Nu 4.0
+> 
+> id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+> sex = c('Nam', 'Nu', 'Nu', 'Nam', 'Nam', 'Nu', 'Nam', 'Nam', 'Nam', 'Nu', 'Nu')
+> tg = c(1.1, 2.1, 0.8, 1.1, 2.1, 1.5, 2.6, 1.5, 5.4, 1.9, 1.7)
+> 
+> d2 = data.frame(id, sex, tg)
+> d2
+   id sex  tg
+1   1 Nam 1.1
+2   2  Nu 2.1
+3   3  Nu 0.8
+4   4 Nam 1.1
+5   5 Nam 2.1
+6   6  Nu 1.5
+7   7 Nam 2.6
+8   8 Nam 1.5
+9   9 Nam 5.4
+10 10  Nu 1.9
+11 11  Nu 1.7
+> 
+> d = merge(d1, d2, by='id', all=true)
+Error in merge.data.frame(d1, d2, by = "id", all = true) : 
+  object 'true' not found
+> d = merge(d1, d2, by='id', all=TRUE)
+> d
+   id sex.x  tc sex.y  tg
+1   1   Nam 4.0   Nam 1.1
+2   2    Nu 3.5    Nu 2.1
+3   3    Nu 4.7    Nu 0.8
+4   4   Nam 7.7   Nam 1.1
+5   5   Nam 5.0   Nam 2.1
+6   6    Nu 4.2    Nu 1.5
+7   7   Nam 5.9   Nam 2.6
+8   8   Nam 6.1   Nam 1.5
+9   9   Nam 5.9   Nam 5.4
+10 10    Nu 4.0    Nu 1.9
+11 11  <NA>  NA    Nu 1.7
+> d.notna = na.omit(d)
+> d.notna
+   id sex.x  tc sex.y  tg
+1   1   Nam 4.0   Nam 1.1
+2   2    Nu 3.5    Nu 2.1
+3   3    Nu 4.7    Nu 0.8
+4   4   Nam 7.7   Nam 1.1
+5   5   Nam 5.0   Nam 2.1
+6   6    Nu 4.2    Nu 1.5
+7   7   Nam 5.9   Nam 2.6
+8   8   Nam 6.1   Nam 1.5
+9   9   Nam 5.9   Nam 5.4
+10 10    Nu 4.0    Nu 1.9
+> 
+> 
+> # 3.5: MÃ HOÁ SỐ LIỆU (DATA CODING)
+> # Biến đỗie số liệu từ biến liên tục sang biến mang tính phân loại
+> 
+> bmd = c(-0.92, 0.21, 0.17, -3.21, -1.80, -2.60, -2.00, 1.71, 2.12, -2.11)
+> bmd
+ [1] -0.92  0.21  0.17 -3.21 -1.80 -2.60 -2.00  1.71  2.12 -2.11
+> diagnosis = bmd
+> diagnosis
+ [1] -0.92  0.21  0.17 -3.21 -1.80 -2.60 -2.00  1.71  2.12 -2.11
+> diagnosis[diagnosis <= -2.5] = 1
+> diagnosis
+ [1] -0.92  0.21  0.17  1.00 -1.80  1.00 -2.00  1.71  2.12 -2.11
+> diagnosis[diagnosis <= -2.5 & bmd <= 1.0] = 2
+> diagnosis[diagnosis > -1.0] = 3
+> 
+> data = data.frame(bmd, diagnosis)
+> data
+     bmd diagnosis
+1  -0.92      3.00
+2   0.21      3.00
+3   0.17      3.00
+4  -3.21      3.00
+5  -1.80     -1.80
+6  -2.60      3.00
+7  -2.00     -2.00
+8   1.71      3.00
+9   2.12      3.00
+10 -2.11     -2.11
+> 
+> # => CÁCH TRÊN LÀ SAI, KH THỂ DÙNG BIẾN `diagnosis` để biến đổi chính diagnosis
+> diagnosis = bmd
+> diagnosis[bmd <= -2.5] = 1
+> diagnosis[bmd > -2.5 & bmd <= 1.0] = 2
+> diagnosis[bmd > -2.5 & bmd <= -1.0] = 2
+> diagnosis[bmd > -1] = 3
+> 
+> data = data.frame(bmd, diagnosis)
+> data
+     bmd diagnosis
+1  -0.92         3
+2   0.21         3
+3   0.17         3
+4  -3.21         1
+5  -1.80         2
+6  -2.60         1
+7  -2.00         2
+8   1.71         3
+9   2.12         3
+10 -2.11         2
+> 
+> 
+> # 3.5.1: BIẾN ĐỔI SỐ LIỆU BẰNG CÁCH DÙNG: REPLACE()
+> diagnosis = bmd
+> diagnosis
+ [1] -0.92  0.21  0.17 -3.21 -1.80 -2.60 -2.00  1.71  2.12 -2.11
+> bmd <= -2.5
+ [1] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+> bmd[bmd <= -2.5]
+[1] -3.21 -2.60
+> int(bmd <= -2.5)
+Error in int(bmd <= -2.5) : could not find function "int"
+> sum()
+[1] 0
+> mean(bmd <= -2.5)
+[1] 0.2
+> 
+> diagnosis = replace(diagnosis, bmd <= -2.5, 1)
+> diagnosis = replace(diagnosis, bmd > -2.5 & bmd <= 1.0, 2)
+> diagnosis = replace(diagnosis, bmd > -2.5 & bmd <= -1.0, 2)
+> diagnosis = replace(diagnosis, bmd > -1.0, 3)
+> 
+> diagnosis
+ [1] 3 3 3 1 2 1 2 3 3 2
+> 
+> 
+> # 3.5.2: BIẾN ĐỔI THÀNH FACTOR
+> # Chuyển đổi biến số số học thành biến số yếu tố (factor)
+> diag_factor = factor(diagnosis)
+> diag_factor
+ [1] 3 3 3 1 2 1 2 3 3 2
+Levels: 1 2 3
+> 
+> # Không thể dùng các phép toán lên biến số factor
+> mean(diag_factor)
+[1] NA
+Warning message:
+In mean.default(diag_factor) :
+  argument is not numeric or logical: returning NA
+> # Chỉ có thể dùng các phép toán lên biến số số học
+> mean(diagnosis)
+[1] 2.3
+> 
+> 
+> # 3.6: CHIA NHÓM BẰNG: CUT()
+> age = c(17, 19, 22, 43, 14, 8, 12, 19, 20, 51, 8, 12, 27, 31, 44)
+> cut(age, 2)
+ [1] (7.96,29.5] (7.96,29.5] (7.96,29.5] (29.5,51]   (7.96,29.5] (7.96,29.5] (7.96,29.5] (7.96,29.5] (7.96,29.5]
+[10] (29.5,51]   (7.96,29.5] (7.96,29.5] (7.96,29.5] (29.5,51]   (29.5,51]  
+Levels: (7.96,29.5] (29.5,51]
+> 
+> table(cut(age, 2))
+
+(7.96,29.5]   (29.5,51] 
+         11           4 
+> c(cut(age, 2))
+ [1] (7.96,29.5] (7.96,29.5] (7.96,29.5] (29.5,51]   (7.96,29.5] (7.96,29.5] (7.96,29.5] (7.96,29.5] (7.96,29.5]
+[10] (29.5,51]   (7.96,29.5] (7.96,29.5] (7.96,29.5] (29.5,51]   (29.5,51]  
+Levels: (7.96,29.5] (29.5,51]
+> 
+> ageg = cut(age, 3, labels=c('low', 'medium', 'high'))
+> ageg
+ [1] low    low    low    high   low    low    low    low    low    high   low    low    medium medium high  
+Levels: low medium high
+> table(ageg)
+ageg
+   low medium   high 
+    10      2      3 
+> quantiles()
+Error in quantiles() : could not find function "quantiles"
+> quartiles()
+Error in quartiles() : could not find function "quartiles"
+> 
+> cut(age, )
+Error in cut.default(age, ) : 
+  argument "breaks" is missing, with no default
+> cut(age, breaks=quartiles(age, c(0, 0.25, 0.50, 0.75, 1)), labels=c('q1', 'q2', 'q3', 'q4'), include.lowest=TRUE)
+Error in quartiles(age, c(0, 0.25, 0.5, 0.75, 1)) : 
+  could not find function "quartiles"
+> cut(age, breaks=quantiles(age, c(0, 0.25, 0.50, 0.75, 1)), labels=c('q1', 'q2', 'q3', 'q4'), include.lowest=TRUE)
+Error in quantiles(age, c(0, 0.25, 0.5, 0.75, 1)) : 
+  could not find function "quantiles"
+> 
+> 
+> # 3.7: TẬP HỢP SỐ LIỆU BẰNG: CUT2() (Hmisc)
+> library(Hmisc)
+Error in library(Hmisc) : there is no package called 'Hmisc'
+> library('~/Downloads/Hmisc')
+Error in library("~/Downloads/Hmisc") : 
+  there is no package called '~/Downloads/Hmisc'
+> getwd()
+[1] "/Users/giakhang/study/data_science/phan_tich_du_lieu_voi_r/stats"
+> library(Hmisc)
+Error in library(Hmisc) : there is no package called 'Hmisc'
+> library(Hmisc)
+Error in library(Hmisc) : there is no package called 'Hmisc'
+> install.package
+Error: object 'install.package' not found
+> install.package()
+Error in install.package() : could not find function "install.package"
+> install.packages()
+--- Please select a CRAN mirror for use in this session ---
+Error in if (res > nrow(m)) { : argument is of length zero
+> 
+> 
+> 
+> 
+> # 3.7: TẬP HỢP SỐ LIỆU BẰNG: CUT2() (Hmisc)
+> install.packages()
+--- Please select a CRAN mirror for use in this session ---
+> 
+> install.packages('Hmisc')
+also installing the dependencies 'colorspace', 'cli', 'crayon', 'utf8', 'farver', 'labeling', 'lifecycle', 'munsell', 'R6', 'ellipsis', 'fansi', 'pillar', 'pkgconfig', 'vctrs', 'stringi', 'evaluate', 'highr', 'yaml', 'xfun', 'backports', 'jsonlite', 'digest', 'glue', 'isoband', 'rlang', 'scales', 'tibble', 'withr', 'png', 'jpeg', 'RColorBrewer', 'stringr', 'knitr', 'magrittr', 'checkmate', 'htmlwidgets', 'rstudioapi', 'viridisLite', 'fastmap', 'Formula', 'ggplot2', 'latticeExtra', 'gtable', 'gridExtra', 'data.table', 'htmlTable', 'viridis', 'htmltools', 'base64enc'
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/colorspace_2.0-2.tgz'
+Content type 'application/x-gzip' length 2618801 bytes (2.5 MB)
+==================================================
+downloaded 2.5 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/cli_3.1.0.tgz'
+Content type 'application/x-gzip' length 1123462 bytes (1.1 MB)
+==================================================
+downloaded 1.1 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/crayon_1.4.2.tgz'
+Content type 'application/x-gzip' length 154868 bytes (151 KB)
+==================================================
+downloaded 151 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/utf8_1.2.2.tgz'
+Content type 'application/x-gzip' length 196736 bytes (192 KB)
+==================================================
+downloaded 192 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/farver_2.1.0.tgz'
+Content type 'application/x-gzip' length 1949853 bytes (1.9 MB)
+==================================================
+downloaded 1.9 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/labeling_0.4.2.tgz'
+Content type 'application/x-gzip' length 60282 bytes (58 KB)
+==================================================
+downloaded 58 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/lifecycle_1.0.1.tgz'
+Content type 'application/x-gzip' length 105712 bytes (103 KB)
+==================================================
+downloaded 103 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/munsell_0.5.0.tgz'
+Content type 'application/x-gzip' length 241442 bytes (235 KB)
+==================================================
+downloaded 235 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/R6_2.5.1.tgz'
+Content type 'application/x-gzip' length 82529 bytes (80 KB)
+==================================================
+downloaded 80 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/ellipsis_0.3.2.tgz'
+Content type 'application/x-gzip' length 36499 bytes (35 KB)
+==================================================
+downloaded 35 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/fansi_1.0.0.tgz'
+Content type 'application/x-gzip' length 364030 bytes (355 KB)
+==================================================
+downloaded 355 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/pillar_1.6.4.tgz'
+Content type 'application/x-gzip' length 1027628 bytes (1003 KB)
+==================================================
+downloaded 1003 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/pkgconfig_2.0.3.tgz'
+Content type 'application/x-gzip' length 17777 bytes (17 KB)
+==================================================
+downloaded 17 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/vctrs_0.3.8.tgz'
+Content type 'application/x-gzip' length 1413008 bytes (1.3 MB)
+==================================================
+downloaded 1.3 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/stringi_1.7.6.tgz'
+Content type 'application/x-gzip' length 14635208 bytes (14.0 MB)
+==================================================
+downloaded 14.0 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/evaluate_0.14.tgz'
+Content type 'application/x-gzip' length 74151 bytes (72 KB)
+==================================================
+downloaded 72 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/highr_0.9.tgz'
+Content type 'application/x-gzip' length 39056 bytes (38 KB)
+==================================================
+downloaded 38 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/yaml_2.2.1.tgz'
+Content type 'application/x-gzip' length 203023 bytes (198 KB)
+==================================================
+downloaded 198 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/xfun_0.29.tgz'
+Content type 'application/x-gzip' length 388686 bytes (379 KB)
+==================================================
+downloaded 379 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/backports_1.4.1.tgz'
+Content type 'application/x-gzip' length 98448 bytes (96 KB)
+==================================================
+downloaded 96 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/jsonlite_1.7.2.tgz'
+Content type 'application/x-gzip' length 491977 bytes (480 KB)
+==================================================
+downloaded 480 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/digest_0.6.29.tgz'
+Content type 'application/x-gzip' length 298460 bytes (291 KB)
+==================================================
+downloaded 291 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/glue_1.6.0.tgz'
+Content type 'application/x-gzip' length 151635 bytes (148 KB)
+==================================================
+downloaded 148 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/isoband_0.2.5.tgz'
+Content type 'application/x-gzip' length 3379737 bytes (3.2 MB)
+==================================================
+downloaded 3.2 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/rlang_0.4.12.tgz'
+Content type 'application/x-gzip' length 1328105 bytes (1.3 MB)
+==================================================
+downloaded 1.3 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/scales_1.1.1.tgz'
+Content type 'application/x-gzip' length 550673 bytes (537 KB)
+==================================================
+downloaded 537 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/tibble_3.1.6.tgz'
+Content type 'application/x-gzip' length 846646 bytes (826 KB)
+==================================================
+downloaded 826 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/withr_2.4.3.tgz'
+Content type 'application/x-gzip' length 213900 bytes (208 KB)
+==================================================
+downloaded 208 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/png_0.1-7.tgz'
+Content type 'application/x-gzip' length 369578 bytes (360 KB)
+==================================================
+downloaded 360 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/jpeg_0.1-9.tgz'
+Content type 'application/x-gzip' length 417415 bytes (407 KB)
+==================================================
+downloaded 407 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/RColorBrewer_1.1-2.tgz'
+Content type 'application/x-gzip' length 52954 bytes (51 KB)
+==================================================
+downloaded 51 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/stringr_1.4.0.tgz'
+Content type 'application/x-gzip' length 210036 bytes (205 KB)
+==================================================
+downloaded 205 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/knitr_1.37.tgz'
+Content type 'application/x-gzip' length 1420007 bytes (1.4 MB)
+==================================================
+downloaded 1.4 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/magrittr_2.0.1.tgz'
+Content type 'application/x-gzip' length 224637 bytes (219 KB)
+==================================================
+downloaded 219 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/checkmate_2.0.0.tgz'
+Content type 'application/x-gzip' length 680743 bytes (664 KB)
+==================================================
+downloaded 664 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/htmlwidgets_1.5.4.tgz'
+Content type 'application/x-gzip' length 894885 bytes (873 KB)
+==================================================
+downloaded 873 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/rstudioapi_0.13.tgz'
+Content type 'application/x-gzip' length 273125 bytes (266 KB)
+==================================================
+downloaded 266 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/viridisLite_0.4.0.tgz'
+Content type 'application/x-gzip' length 1296462 bytes (1.2 MB)
+==================================================
+downloaded 1.2 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/fastmap_1.1.0.tgz'
+Content type 'application/x-gzip' length 187599 bytes (183 KB)
+==================================================
+downloaded 183 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/Formula_1.2-4.tgz'
+Content type 'application/x-gzip' length 174953 bytes (170 KB)
+==================================================
+downloaded 170 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/ggplot2_3.3.5.tgz'
+Content type 'application/x-gzip' length 4125542 bytes (3.9 MB)
+==================================================
+downloaded 3.9 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/latticeExtra_0.6-29.tgz'
+Content type 'application/x-gzip' length 2201061 bytes (2.1 MB)
+==================================================
+downloaded 2.1 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/gtable_0.3.0.tgz'
+Content type 'application/x-gzip' length 431504 bytes (421 KB)
+==================================================
+downloaded 421 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/gridExtra_2.3.tgz'
+Content type 'application/x-gzip' length 1102731 bytes (1.1 MB)
+==================================================
+downloaded 1.1 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/data.table_1.14.2.tgz'
+Content type 'application/x-gzip' length 2336276 bytes (2.2 MB)
+==================================================
+downloaded 2.2 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/htmlTable_2.4.0.tgz'
+Content type 'application/x-gzip' length 417887 bytes (408 KB)
+==================================================
+downloaded 408 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/viridis_0.6.2.tgz'
+Content type 'application/x-gzip' length 2998644 bytes (2.9 MB)
+==================================================
+downloaded 2.9 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/htmltools_0.5.2.tgz'
+Content type 'application/x-gzip' length 333000 bytes (325 KB)
+==================================================
+downloaded 325 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/base64enc_0.1-3.tgz'
+Content type 'application/x-gzip' length 31642 bytes (30 KB)
+==================================================
+downloaded 30 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/contrib/4.1/Hmisc_4.6-0.tgz'
+Content type 'application/x-gzip' length 3259927 bytes (3.1 MB)
+==================================================
+downloaded 3.1 MB
+
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+tar: Failed to set default locale
+The downloaded binary packages are in
+	/var/folders/ny/9kp81_gd3l35hdg__zcg071m0000gp/T//RtmpxydiBX/downloaded_packages
+> library(Hmisc)
+Loading required package: lattice
+Loading required package: survival
+Loading required package: Formula
+Loading required package: ggplot2
+Need help getting started? Try the R Graphics Cookbook: https://r-graphics.org
+
+Attaching package: 'Hmisc'
+
+The following objects are masked from 'package:base':
+
+    format.pval, units
+
+> bmd = c(-0.92, 0.21, 0.17, -3.21, -1.80, -2.60, -2.00, 1.71, 2.12, -2.11)
+> group = cut2(bmd, g=2)
+> group
+ [1] [-0.92, 2.12] [-0.92, 2.12] [-0.92, 2.12] [-3.21,-0.92) [-3.21,-0.92) [-3.21,-0.92) [-3.21,-0.92) [-0.92, 2.12]
+ [9] [-0.92, 2.12] [-3.21,-0.92)
+Levels: [-3.21,-0.92) [-0.92, 2.12]
+> table(group)
+group
+[-3.21,-0.92) [-0.92, 2.12] 
+            5             5 
+> 
+> 
+> group = cut2(bmd, g=3)
+> table(group)
+group
+[-3.21,-1.80) [-1.80, 0.21) [ 0.21, 2.12] 
+            4             3             3 
+> 

@@ -77,16 +77,17 @@ ins = edit(data.frame())
 # ============== Cách 02: Nhập số liệu trực tiếp: edit(data.frame())
 # =========
 q()
-# ============ Cách 02: nhập số liệu từ text file: read.table ==================
-setwd("~/study/data_science/phan_tich_du_lieu_voi_r/chapter02-nhap-du-lieu/stats")
+setwd("~/Dropbox/study/data_science/phan_tich_du_lieu_voi_r/chapter02-nhap-du-lieu/stats")
 getwd()
-chol = read.table('chol.txt', header=TRUE)
-chol
-names(chol)
-save(chol, file='chol.rda')
-# =============== Cách 03: nhập số liệu từ excel: read.csv =============
 gh = read.csv('excel.csv', header=TRUE)
 gh
+# THÔNG TIN CƠ BẢN VỀ DỮ LIỆU
+attach(gh)
+# KIỂM TRA CÓ PHẢI LÀ `data.frame` HAY KHÔNG
+is.data.frame(gh)
+# KIỂM TRA SỐ LƯỢNG CỘT VÀ SỐ DÒNG
+dim(gh)
+# LIỆT KÊ CÁC CỘT
 names(gh)
-save(gh, file='gh.rda')
-q()
+# ĐẾM SỐ LƯỢNG MỖI GIÁ TRỊ CỦA BIẾN
+table(Sex)
